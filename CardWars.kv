@@ -1,0 +1,248 @@
+<StartUpPage>: 
+    MDRaisedButton :
+        pos_hint : {"center_x":.2, "center_y":.5}
+        size_hint : {.28, .8 }
+        on_release : root.manager.current = "create_room_page"
+        md_bg_color : 204/255, 198/255, 116/255
+        
+        
+        MDLabel :
+            text : "Create Room"
+            font_style : "Button"
+            font_size : 30
+            pos_hint : 
+            halign : "center"
+            size_hint_y : None
+            
+    MDRaisedButton :
+        pos_hint : {"center_x":.5, "center_y":.5}
+        size_hint : {.28, .8 }
+        on_release : root.manager.current = "join_room_page"
+        md_bg_color : 184/255, 130/255, 119/255
+        
+        MDLabel :
+            text : "Join Room"
+            font_style : "Button"
+            font_size : 30
+            halign : "center"
+            size_hint_y : None
+            height : self.texture_size[1]
+    MDRaisedButton :
+        pos_hint : {"center_x":.8, "center_y":.5}
+        size_hint : {.28, .8 }
+        on_release : root.manager.current = "join_room_page"
+        md_bg_color : 122/255, 193/255, 194/255, 1
+        MDLabel :
+            text : "VS AI"
+            font_style : "Button"
+            font_size : 30
+            halign : "center"
+            size_hint_y : None
+            height : self.texture_size[1]
+
+<CreateRoomPage> :
+    MDFloatLayout :
+        md_bg_color : 1, 1, 1,1
+        MDIconButton : 
+            icon : "chevron-left"
+            user_font_size : "35sp"
+            pos_hint : {"center_y":.95}
+            on_release : root.manager.current = "start_up_page"
+        MDLabel : 
+            text : "Back"
+            font_size : "18sp"
+            font_name : "Poppins-Regular.ttf"
+            pos_hint : {"center_x":.615, "center_y": .949}
+        MDLabel : 
+            text : "CREATE ROOM"
+            font_size : "22sp"
+            color : 120/255, 120/255, 120/255, 1
+            pos_hint : {"center_x":.8, "center_y":.95}
+        MDFloatLayout :
+            size_hint : .8, .8
+            pos_hint : {"x" : -.1, "y": .1}
+
+            MDLabel : 
+                text : "Name"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": .4}
+            TextInput :
+                pos_hint : {"x" : .2, "y": .7}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                multiline : False
+                id : name_prompt
+            MDLabel : 
+                text : "Network"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": .1}
+            TextInput :
+                id : network
+                pos_hint : {"x" : .2, "y": .4}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                multiline : False
+                text : "10.0.0.10"
+            MDLabel : 
+                text : "Port"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": -.2}
+            TextInput :
+                id : port
+                pos_hint : {"x" : .2, "y": .1}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                text : ""
+                multiline : False
+            MDRaisedButton :
+                text : "Create"
+                font_style : "Button"
+                pos_hint : {"x" : 1.05, "y": .1}
+                on_release : root.make_room()
+            MDIconButton :
+                icon : "account"
+                pos_hint : {"x" : 1.08, "y": .5}
+                size : 80, 80
+            MDLabel : 
+                text : "Profile"
+                font_name : "Poppins-Regular.ttf"
+                foreground_color : 0,0,0,1
+                pos_hint : {"x" : 1.07, "y": -.05}
+                font_size : "20sp"
+                font_name : "Poppins-Regular.ttf"
+<JoinRoomPage> :
+    MDFloatLayout :
+        md_bg_color : 1, 1, 1,1
+        MDIconButton : 
+            icon : "chevron-left"
+            user_font_size : "35sp"
+            pos_hint : {"center_y":.95}
+            on_release : root.manager.current = "start_up_page"
+        MDLabel : 
+            text : "Back"
+            font_size : "18sp"
+            font_name : "Poppins-Regular.ttf"
+            pos_hint : {"center_x":.615, "center_y": .949}
+        MDLabel : 
+            text : "JOIN ROOM"
+            font_size : "22sp"
+            color : 120/255, 120/255, 120/255, 1
+            pos_hint : {"center_x":.8, "center_y":.95}
+        MDFloatLayout :
+            size_hint : .8, .8
+            pos_hint : {"x" : -.1, "y": .1}
+
+            MDLabel : 
+                text : "Name"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": .4}
+            TextInput :
+                pos_hint : {"x" : .2, "y": .7}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                multiline : False
+                id : name_prompt
+            MDLabel : 
+                text : "Network"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": .1}
+            TextInput :
+                id : network
+                pos_hint : {"x" : .2, "y": .4}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                multiline : False
+                text : "10.0.0.10"
+            MDLabel : 
+                text : "Port"
+                font_name : "Poppins-Regular.ttf"
+                pos_hint : {"x" : .2, "y": -.2}
+            TextInput :
+                id : port
+                pos_hint : {"x" : .2, "y": .1}
+                size_hint : .7, .12
+                foreground_color : 0,0,0,1
+                background_color : 0,0,0,0.2
+                font_size : "15sp"
+                font_name : "Poppins-Regular.ttf"
+                cursor_width : "2sp"
+                text : ""
+                multiline : False
+            MDRaisedButton :
+                text : "Join"
+                font_style : "Button"
+                pos_hint : {"x" : 1.07, "y": .1}
+                on_release : root.join_room()
+            MDIconButton :
+                icon : "account"
+                pos_hint : {"x" : 1.08, "y": .5}
+                size : 80, 80
+            MDLabel : 
+                text : "Profile"
+                font_name : "Poppins-Regular.ttf"
+                foreground_color : 0,0,0,1
+                pos_hint : {"x" : 1.07, "y": -.05}
+                font_size : "20sp"
+                font_name : "Poppins-Regular.ttf"
+
+<GameRoomPage> :
+    MDFloatLayout :
+        pos_hint : {"x":.0, "y":.0}
+        MDIconButton :
+            icon : "account"
+            halign : "center"
+            pos_hint : {"center_x" : .3, "y": .6}     
+        MDLabel :
+            font_size : 30
+            halign : "center"
+            text : ""
+            pos_hint : {"center_x": .3}
+            id : this_name_txt
+        MDLabel : 
+            id : heading_txt
+            text : ""
+            font_size : "22sp"
+            halign : "center"
+            color : 120/255, 120/255, 120/255, 1
+            pos_hint : {"center_x":.5, "center_y":.95} 
+        MDLabel :
+            font_size : 20
+            color : 0,0,0,1
+            halign : "center"
+            text : "vs"
+            pos_hint : {"center_x ": 0.5}
+        MDIconButton :
+            icon : "account"
+            halign : "center"
+            pos_hint : {"center_x" : .7, "y": .6}     
+        Label :
+            id : opponent_name_txt
+            font_size : 30
+            halign : "center"
+            text : ""
+            color : 0,0,0, 1
+            pos_hint : {"center_x": .7}
+
+
+ 
+
