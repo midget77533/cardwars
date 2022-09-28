@@ -259,7 +259,7 @@ class GamePage(Screen):
         pos = touch.pos
         if self.moves_left <= 0:
             print("out of moves")
-        if CLIENT.this_turn and self.moves_left > 0:
+        if CLIENT.this_turn :
             for card in self.hand:
                 self.current_card = card
                 if pos[0] > self.current_card.rect.pos[0] and pos[0] < self.current_card.rect.pos[0] + 98 and pos[1] > self.current_card.rect.pos[1] and pos[1] < self.current_card.rect.pos[1] + 140:
