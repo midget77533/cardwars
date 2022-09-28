@@ -205,11 +205,9 @@ class GamePage(Screen):
                 Rectangle(source="arena card-wars_p2.png", pos=(0,0), size=(700,380 )) 
             if CLIENT.is_hosting:
                 Rectangle(source="arena card-wars_p1.png", pos=(0, 0), size=(700,380)) 
-            Color(1,0,0,1, mode="rgba")
-            self.deck_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140))
-            Color(0,0,1,1, mode="rgba")
-            self.dump_pile = Rectangle(pos=(30, 100), size=(98, 140))
-            Color(0,1,1,1, mode="rgba")
+
+            self.deck_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140), source="DECK_AND_DUMP/DECK.png")
+            self.dump_pile = Rectangle(pos=(30, 100), size=(98, 140), source="DECK_AND_DUMP/DUMP.png")
             self.end_turn_btn = Rectangle(pos=(650, 20),size=(40, 40))
             Color(1,1,1,1, mode="rgba")
             for card in CLIENT.board:
