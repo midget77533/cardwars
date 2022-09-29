@@ -165,7 +165,6 @@ class GamePage(Screen):
         self.cb_pos = (105, 25)
         with self.canvas:
             self.end_turn_btn = Rectangle(pos=(650, 100),size=(40, 40))
-        #MDRaisedButton(id="btng", halign="center", text="2", font_size=30, pos_hint={"center_x":.95, "center_y":.2}, on_release=self.end_turn)
         self.tnt = MDLabel(id="this_name_txt", halign="center", text="1", font_size=30, pos_hint={"center_x":.125, "center_y":.9})
         self.ont = MDLabel(id="opponent_name_txt", halign="center", text="2", font_size=30, pos_hint={"center_x":.875, "center_y":.9})
         self.thpt = MDLabel(id="this_name_txt", halign="center", text="1", font_size=30, pos_hint={"center_x":.15, "center_y":.8})
@@ -174,6 +173,7 @@ class GamePage(Screen):
         self.omt = MDLabel(halign="center", text="2", font_size=30, pos_hint={"center_x":.85, "center_y":.7})
         self.draw()
         self.moves_left = 3
+        self.end_txt = MDLabel(halign="center", text="", pos_hint={"center_x":.5, "center_y":.5}, )
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
     def manage_screen(self, *args):
@@ -250,6 +250,22 @@ class GamePage(Screen):
             Color(0,0,0,.4, mode='rgba')
             for c in self.hand:
                 c.draw()
+            if CLIENT.game_over:
+                Color(0,0,0,.5, mode="rgba")
+                Rectangle(pos=(0,0), size=(Window.size[0], Window.size[1]))
+                Color(1,1,1,1, mode="rgba")
+                self.end_txt.font_size = 87
+                if CLIENT.victor:
+                    self.end_txt.text = "VICTORY"
+                    self.end_txt.color = (0,1,0)
+                    self.end_txt.pos_hint = {"center_x":.5, "center_y":.5}
+                    CLIENT.this_turn = False
+                if not CLIENT.victor:
+                    self.end_txt.text = "DEFEAT"
+                    self.end_txt.color = (1,0,0)
+                    self.end_txt.pos_hint = {"center_x":.5, "center_y":.5}
+                    CLIENT.this_turn = False
+
     def update(self, *args):
         self.remove_widget(self.tnt)
         self.remove_widget(self.ont)
@@ -257,6 +273,7 @@ class GamePage(Screen):
         self.remove_widget(self.ohpt)
         self.remove_widget(self.tmt)
         self.remove_widget(self.omt)
+        self.remove_widget(self.end_txt)
         self.canvas.clear()
         self.draw()
         self.manage_screen()
@@ -266,6 +283,8 @@ class GamePage(Screen):
         self.add_widget(self.omt)
         self.add_widget(self.thpt)
         self.add_widget(self.ohpt)
+        self.add_widget(self.end_txt)
+        
     def on_touch_down(self, touch):
         global CLIENT
         pos = touch.pos

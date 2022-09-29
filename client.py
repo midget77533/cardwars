@@ -38,6 +38,8 @@ class Client:
         self.opp_hp = 30
         self.magic = 50
         self.opp_magic = 50
+        self.game_over = False
+        self.victor = False
     def run(self):
         self.c = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.c.connect((self.host,self.port))
@@ -111,13 +113,13 @@ class Client:
                         OC.health -= MC.attack
                         MC.health -= OC.attack
                         if OC.health <= 0:
-                            self.magic += 2
+                            self.magic += 4
                             # self.msg = f"[{self.name}]/[MAGIC]/{self.magic}"
                     else:
                         MC.health -= OC.attack
                         OC.health -= MC.attack
                         if OC.health <= 0:
-                            self.magic += 2
+                            self.magic += 4
                             # self.msg = f"[{self.name}]/[MAGIC]/{self.magic}"
 
         for MC in self.board:
@@ -191,7 +193,15 @@ class Client:
         if s3t:
             self.opp_hp -= 1
 
-        print(f"HP : {self.hp}" )
+        if self.opp_hp <= 0 and self.hp > 0:
+            self.game_over = True
+            self.victor = True
+            print("WON")
+        if self.opp_hp > 0 and self.hp <= 0:
+            self.game_over = True
+            self.victor = False
+            print("LOST")
+
 
 
 
