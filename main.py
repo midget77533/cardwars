@@ -166,12 +166,14 @@ class GamePage(Screen):
         with self.canvas:
             self.end_turn_btn = Rectangle(pos=(650, 100),size=(40, 40))
         #MDRaisedButton(id="btng", halign="center", text="2", font_size=30, pos_hint={"center_x":.95, "center_y":.2}, on_release=self.end_turn)
-        self.tnt = MDLabel(id="this_name_txt", halign="center", text="1", font_size=30, pos_hint={"center_x":.15, "center_y":.8})
-        self.ont = MDLabel(id="opponent_name_txt", halign="center", text="2", font_size=30, pos_hint={"center_x":.85, "center_y":.8})
+        self.tnt = MDLabel(id="this_name_txt", halign="center", text="1", font_size=30, pos_hint={"center_x":.125, "center_y":.9})
+        self.ont = MDLabel(id="opponent_name_txt", halign="center", text="2", font_size=30, pos_hint={"center_x":.875, "center_y":.9})
+        self.thpt = MDLabel(id="this_name_txt", halign="center", text="1", font_size=30, pos_hint={"center_x":.15, "center_y":.8})
+        self.ohpt = MDLabel(id="opponent_name_txt", halign="center", text="2", font_size=30, pos_hint={"center_x":.85, "center_y":.8})
         self.tmt = MDLabel(halign="center", text="1", font_size=30, pos_hint={"center_x":.15, "center_y":.7})
         self.omt = MDLabel(halign="center", text="2", font_size=30, pos_hint={"center_x":.85, "center_y":.7})
         self.draw()
-        self.moves_left = 300
+        self.moves_left = 3
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
     def manage_screen(self, *args):
@@ -197,8 +199,10 @@ class GamePage(Screen):
         s2c = 0
         s3c = 0
 
-        self.tnt.text = CLIENT.name + f": {str(CLIENT.hp)}"
-        self.ont.text = CLIENT.opponent_name + f": {str(CLIENT.opp_hp)}"
+        self.tnt.text = CLIENT.name
+        self.ont.text = CLIENT.opponent_name 
+        self.thpt.text = f"{str(CLIENT.hp)}"
+        self.ohpt.text = f"{str(CLIENT.opp_hp)}"
         self.tmt.text = str(CLIENT.magic)
         self.omt.text = str(CLIENT.opp_magic)
         with self.canvas:
@@ -208,7 +212,11 @@ class GamePage(Screen):
                 Rectangle(source="arena card-wars_p1.png", pos=(0, 0), size=(700,380)) 
             self.deck_pile = Rectangle(pos=(30, 100), size=(98, 140), source="DECK_AND_DUMP/DECK.png")
             self.dump_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140), source="DECK_AND_DUMP/DUMP.png")
-            #pos=(700 - 98 - 30, 100)
+            Color(1,1,1,1, mode="rgba")
+            mt1 = Rectangle(pos=(self.tmt.x + 245 + 40, 235), size=(65 / 1.5, 93 / 1.5), source="magic_icon.png")
+            mt2 = Rectangle(pos=(self.omt.x + 245 + 130, 235), size=(65 / 1.5, 93 / 1.5), source="magic_icon.png")
+            ht1 = Rectangle(pos=(self.tmt.x + 245 + 40, 270), size=(65 / 1.5, 93 / 1.5), source="HP_icon.png")
+            ht2 = Rectangle(pos=(self.omt.x + 245 + 130, 270), size=(65 / 1.5, 93 / 1.5), source="HP_icon.png")
             Color(1,0,0,1, mode="rgba")
             self.end_turn_btn = Rectangle(pos=(650, 20),size=(40, 40))
             Color(1,1,1,1, mode="rgba")
@@ -245,6 +253,8 @@ class GamePage(Screen):
     def update(self, *args):
         self.remove_widget(self.tnt)
         self.remove_widget(self.ont)
+        self.remove_widget(self.thpt)
+        self.remove_widget(self.ohpt)
         self.remove_widget(self.tmt)
         self.remove_widget(self.omt)
         self.canvas.clear()
@@ -254,6 +264,8 @@ class GamePage(Screen):
         self.add_widget(self.ont)
         self.add_widget(self.tmt)
         self.add_widget(self.omt)
+        self.add_widget(self.thpt)
+        self.add_widget(self.ohpt)
     def on_touch_down(self, touch):
         global CLIENT
         pos = touch.pos
