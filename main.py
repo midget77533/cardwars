@@ -77,7 +77,6 @@ class GameCard(Widget):
 
 
     def draw(self):
-
         Color(1,1,1,1, mode="rgba")
         self.rect = Rectangle(pos=(self.dx,self.dy), size=(98, 140))
         self.rarity = 0
@@ -172,13 +171,12 @@ class GamePage(Screen):
         self.tmt = MDLabel(halign="center", text="1", font_size=30, pos_hint={"center_x":.15, "center_y":.7})
         self.omt = MDLabel(halign="center", text="2", font_size=30, pos_hint={"center_x":.85, "center_y":.7})
         self.draw()
-        self.moves_left = 3
+        self.moves_left = 300
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
     def manage_screen(self, *args):
         global CLIENT
         if not CLIENT.this_turn:
-
             for card in self.hand:
                 if card != self.SC:
                     card.rect.pos = (card.rect.pos[0], -125)
@@ -186,10 +184,12 @@ class GamePage(Screen):
             for card in self.hand:
                 if card != self.SC:
                     card.rect.pos = card.og_pos
+
     def end_turn(self):
         global CLIENT
         CLIENT.msg = f"[{CLIENT.name}]/[TURNCHANGE]/{CLIENT.magic}"
         CLIENT.this_turn = False
+        CLIENT.update_board()
         self.moves_left = 3
     def draw(self, *args):
         global CLIENT, s1c, s2c, s3c
@@ -206,9 +206,9 @@ class GamePage(Screen):
                 Rectangle(source="arena card-wars_p2.png", pos=(0,0), size=(700,380 )) 
             if CLIENT.is_hosting:
                 Rectangle(source="arena card-wars_p1.png", pos=(0, 0), size=(700,380)) 
-
-            self.deck_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140), source="DECK_AND_DUMP/DECK.png")
-            self.dump_pile = Rectangle(pos=(30, 100), size=(98, 140), source="DECK_AND_DUMP/DUMP.png")
+            self.deck_pile = Rectangle(pos=(30, 100), size=(98, 140), source="DECK_AND_DUMP/DECK.png")
+            self.dump_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140), source="DECK_AND_DUMP/DUMP.png")
+            #pos=(700 - 98 - 30, 100)
             Color(1,0,0,1, mode="rgba")
             self.end_turn_btn = Rectangle(pos=(650, 20),size=(40, 40))
             Color(1,1,1,1, mode="rgba")
@@ -278,11 +278,9 @@ class GamePage(Screen):
                     r = random.randint(0,len(NUMS) -1)
                     s = NUMS[r]
                     c = GameCard(s, s, len(self.hand) + 1)
-                    
                     self.hand.append(c)
                     self.SC = self.hand[len(self.hand) - 1]
                     CLIENT.magic -= 5
-                    # CLIENT.msg = f"[{CLIENT.name}]/[MAGIC]/{CLIENT.magic}"
                     print('added card')
                     self.moves_left -= 1
                 elif CLIENT.magic >= 5:
@@ -319,12 +317,10 @@ class GamePage(Screen):
                 if card != self.SC:
                     card.dx, card.dy = card.og_pos
             self.cb_pos = (105, 25)
-
-
-
     def on_touch_up(self, touch):
         global CLIENT, CARDS, NUMS, s1c, s2c, s3c
         pos = touch.pos
+
         for card in self.hand:
             if card != self.SC and CLIENT.this_turn:
                 card.rect.pos = card.og_pos
@@ -347,13 +343,14 @@ class GamePage(Screen):
                 CLIENT.board.append(oe)
                 msg = f"[{CLIENT.name}]/[PLACED]/{oe.slot}|{oe.num}|{oe.health}|{oe.attack}"
                 CLIENT.msg = msg
-                CLIENT.update_board()
+
                 self.hand.remove(self.SC)
                 for i in range(len(self.hand)):
                     self.hand[i].lpos = i
                     self.hand[i].og_pos = (100 + (103 * i), 35)
                 self.hovererd_land_plot = 0
                 self.moves_left -= 1
+                
         btn = self.dump_pile
         if pos[0] > btn.pos[0] and pos[0] < btn.pos[0] + btn.size[0] and pos[1] > btn.pos[1] and pos[1] < btn.pos[1] + btn.size[1]:
             if self.SC != None:
@@ -367,8 +364,12 @@ class GamePage(Screen):
             self.SC.dx = self.SC.og_pos[0]
             self.SC.dy = self.SC.og_pos[1]
             self.SC = None
-
-
+        for i in range(len(self.hand)):
+            card = self.hand[i]
+            card.lpos = i + 1
+            card.og_pos = (320 + (103 * card.lpos - 1) - (len(self.hand) / 2 * 130), 35)
+            #num = (320 + (103 * card.lpos - 1) - (len(self.hand) / 2 * 130))
+            
 class JoinRoomPage(Screen):
     def join_room(self):
         global connections, CLIENT, sm, SERVER

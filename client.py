@@ -93,11 +93,11 @@ class Client:
                                     c.attack += 5
                                     print("5 attack added to oppponent")
                             
-                        self.update_board()
+                        
                     if m1[1] == "[TURNCHANGE]":
                         self.this_turn = True
                         self.opp_magic = int(m1[2])
-
+                        self.update_board()
             else:
                 if self.opponent_name == "" and msg[1] != self.name:
                     self.opponent_name = msg[1]
