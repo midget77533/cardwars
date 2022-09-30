@@ -125,11 +125,11 @@ class Client:
         for MC in self.board:
             if MC.health <= 0:
                 self.board.remove(MC)
-                time.sleep(1)
+
         for OC in self.ob:
             if OC.health <= 0:
                 self.ob.remove(OC)
-                time.sleep(1)
+
         s1t = False
         s2t = False
         s3t = False
