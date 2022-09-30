@@ -174,6 +174,7 @@ class GamePage(Screen):
         self.draw()
         self.moves_left = 3
         self.end_txt = MDLabel(halign="center", text="", pos_hint={"center_x":.5, "center_y":.5}, )
+        self.cards_drawn = 0
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
     def manage_screen(self, *args):
@@ -193,6 +194,7 @@ class GamePage(Screen):
         CLIENT.this_turn = False
         CLIENT.update_board()
         self.moves_left = 3
+        self.cards_drawn = 0
     def draw(self, *args):
         global CLIENT, s1c, s2c, s3c
         s1c = 0
@@ -304,16 +306,19 @@ class GamePage(Screen):
             if pos[0] > self.end_turn_btn.pos[0] and pos[0] < self.end_turn_btn.pos[0] + self.end_turn_btn.size[0] and pos[1] > self.end_turn_btn.pos[1] and pos[1] < self.end_turn_btn.pos[1] + self.end_turn_btn.size[1]:
                 self.end_turn()
             btn = self.deck_pile
-            if pos[0] > btn.pos[0] and pos[0] < btn.pos[0] + btn.size[0] and pos[1] > btn.pos[1] and pos[1] < btn.pos[1] + btn.size[1] and self.moves_left > 0:
+            if pos[0] > btn.pos[0] and pos[0] < btn.pos[0] + btn.size[0] and pos[1] > btn.pos[1] and pos[1] < btn.pos[1] + btn.size[1] and (self.moves_left > 0 or self.cards_drawn == 0):
                 if len(self.hand) < 5 and CLIENT.magic >= 5:
                     r = random.randint(0,len(NUMS) -1)
                     s = NUMS[r]
                     c = GameCard(s, s, len(self.hand) + 1)
                     self.hand.append(c)
                     self.SC = self.hand[len(self.hand) - 1]
-                    CLIENT.magic -= 5
+                    
                     print('added card')
-                    self.moves_left -= 1
+                    if self.cards_drawn > 0:
+                        self.moves_left -= 1
+                        CLIENT.magic -= 5
+                    self.cards_drawn += 1
                 elif CLIENT.magic >= 5:
                     print("too many card in your hand")
                 elif len(self.hand) < 5:

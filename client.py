@@ -113,13 +113,13 @@ class Client:
                         OC.health -= MC.attack
                         MC.health -= OC.attack
                         if OC.health <= 0:
-                            self.magic += 4
+                            self.magic += 2
                             # self.msg = f"[{self.name}]/[MAGIC]/{self.magic}"
                     else:
                         MC.health -= OC.attack
                         OC.health -= MC.attack
                         if OC.health <= 0:
-                            self.magic += 4
+                            self.magic += 2
                             # self.msg = f"[{self.name}]/[MAGIC]/{self.magic}"
 
         for MC in self.board:
