@@ -33,7 +33,7 @@ class Client:
         self.opponent_name = ""
         self.ob = []
         self.board = []
-        self.this_turn = is_hosting
+        self.this_turn = False
         self.hp = 30
         self.opp_hp = 30
         self.magic = 50
@@ -52,7 +52,7 @@ class Client:
                     self.c.send(self.msg.encode(self.format))
                     sent_name = True
                 elif not self.is_hosting:
-                    time.sleep(2)
+                    time.sleep(1)
                     self.msg = "[NAME]:" + self.name
                     self.c.send(self.msg.encode(self.format))
                     sent_name = True
@@ -71,7 +71,8 @@ class Client:
 
             if received_msg == "[START]":
                 self.game_screen()
-
+            if received_msg == "[STARTGAME]":
+                self.this_turn = True
             if msg[0] != "[NAME]":
                 m1 = received_msg.split("/")
                 if m1[0] == f"[{self.opponent_name}]":
@@ -196,11 +197,9 @@ class Client:
         if self.opp_hp <= 0 and self.hp > 0:
             self.game_over = True
             self.victor = True
-            print("WON")
         if self.opp_hp > 0 and self.hp <= 0:
             self.game_over = True
             self.victor = False
-            print("LOST")
 
 
 

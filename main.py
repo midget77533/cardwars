@@ -44,6 +44,9 @@ GAME_STATE = ""
 sm = ScreenManager()
 CLIENT = None
 SEVER = None
+BUILDING_CARD  = [
+    [30,10],[10,10], [15]
+]
 CARDS = [
     #common
     [3,3],[2,2],[1,4],[2,1],[2,1],[2,3],[1,2],
@@ -126,12 +129,12 @@ class GameRoomPage(Screen):
         global CLIENT, SEVER
         self.ids.this_name_txt.text = CLIENT.name
         self.ids.heading_txt.text = "WAITING"
-        self.add_start_btn()
+        #self.add_start_btn()
         while CLIENT.opponent_name == "":
             pass
         if CLIENT.is_hosting:
             CLIENT.connections = SERVER.connections
-            #self.add_start_btn()
+            self.add_start_btn()
         self.ids.opponent_name_txt.text = CLIENT.opponent_name
         self.ids.heading_txt.text = "READY"
         
@@ -219,9 +222,8 @@ class GamePage(Screen):
             mt2 = Rectangle(pos=(self.omt.x + 245 + 130, 235), size=(65 / 1.5, 93 / 1.5), source="magic_icon.png")
             ht1 = Rectangle(pos=(self.tmt.x + 245 + 40, 270), size=(65 / 1.5, 93 / 1.5), source="HP_icon.png")
             ht2 = Rectangle(pos=(self.omt.x + 245 + 130, 270), size=(65 / 1.5, 93 / 1.5), source="HP_icon.png")
-            Color(1,0,0,1, mode="rgba")
-            self.end_turn_btn = Rectangle(pos=(650, 20),size=(40, 40))
-            Color(1,1,1,1, mode="rgba")
+            self.end_turn_btn = Rectangle(pos=(590.25, 30),size=(73, 53), source=("DECK_AND_DUMP/END_TURN.png"))
+            
             for card in CLIENT.board:
                 s = f'entity_view/{card.num}.png'
                 Color(1,1,1,card.alpha)
