@@ -44,9 +44,7 @@ GAME_STATE = ""
 sm = ScreenManager()
 CLIENT = None
 SEVER = None
-BUILDING_CARD  = [
-    [30,10],[10,10], [15]
-]
+
 CARDS = [
     #common
     [3,3],[2,2],[1,4],[2,1],[2,1],[2,3],[1,2],
@@ -177,6 +175,7 @@ class GamePage(Screen):
         self.draw()
         self.moves_left = 3
         self.end_txt = MDLabel(halign="center", text="", pos_hint={"center_x":.5, "center_y":.5}, )
+        self.build_phase = True
         self.cards_drawn = 0
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
@@ -379,6 +378,7 @@ class GamePage(Screen):
                     CLIENT.board = []
                     CLIENT.ob = []
                 CLIENT.board.append(oe)
+
                 msg = f"[{CLIENT.name}]/[PLACED]/{oe.slot}|{oe.num}|{oe.health}|{oe.attack}"
                 CLIENT.msg = msg
 

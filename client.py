@@ -1,3 +1,4 @@
+from imp import is_builtin
 from logging import error
 import socket
 import threading
@@ -18,6 +19,7 @@ class Entity:
             self.active = True
             self.alpha = 1
             self.just_placed = False
+
 class Client:
     def __init__(self, host, port, msg, connections, name, is_hosting, sm):
         self.host = host
