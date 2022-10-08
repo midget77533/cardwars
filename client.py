@@ -91,12 +91,12 @@ class Client:
                             for c in self.ob:
                                 if c.slot == int(m2[0]):
                                     c.health += 4
-                                    print("4 health added to oppponent")
+
                         if int(m2[1]) == 18:
                             for c in self.ob:
                                 if c.slot == int(m2[0]):
                                     c.attack += 5
-                                    print("5 attack added to oppponent")
+
                             
                         
                     if m1[1] == "[TURNCHANGE]":

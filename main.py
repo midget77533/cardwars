@@ -177,6 +177,7 @@ class GamePage(Screen):
         self.end_txt = MDLabel(halign="center", text="", pos_hint={"center_x":.5, "center_y":.5}, )
         self.build_phase = True
         self.cards_drawn = 0
+        
         Clock.schedule_interval(self.update, 1/10)
         return super().on_pre_enter(*args)
     def manage_screen(self, *args):
@@ -215,6 +216,20 @@ class GamePage(Screen):
             if CLIENT.is_hosting:
                 Rectangle(source="arena card-wars_p1.png", pos=(0, 0), size=(700,380)) 
             self.deck_pile = Rectangle(pos=(30, 100), size=(98, 140), source="DECK_AND_DUMP/DECK.png")
+            try:
+                if self.moves_left <= 0 and self.cards_drawn > 0:
+                    Color(0,0,0,.5, mode="rgba")
+                    Rectangle(pos=(0,0), size=(Window.size[0], Window.size[1]))
+                    Color(1,1,1,1, mode="rgba")
+                    self.end_txt.font_size = 30
+                    self.end_txt.text = "OUT OF MOVES"
+                    self.end_txt.color = (.8,.8,.8)
+                    self.end_txt.pos_hint = {"center_x":.5, "center_y":.7}
+                else:
+                    self.end_txt.text = ""
+            except:
+                pass
+
             self.dump_pile = Rectangle(pos=(700 - 98 - 30, 100), size=(98, 140), source="DECK_AND_DUMP/DUMP.png")
             Color(1,1,1,1, mode="rgba")
             mt1 = Rectangle(pos=(self.tmt.x + 245 + 40, 235), size=(65 / 1.5, 93 / 1.5), source="magic_icon.png")
@@ -256,7 +271,7 @@ class GamePage(Screen):
             if CLIENT.game_over:
                 Color(0,0,0,.5, mode="rgba")
                 Rectangle(pos=(0,0), size=(Window.size[0], Window.size[1]))
-                Color(1,1,1,1, mode="rgba")
+                Color(1,1,1,1, mode="rgba") 
                 self.end_txt.font_size = 87
                 if CLIENT.victor:
                     self.end_txt.text = "VICTORY"
@@ -291,8 +306,7 @@ class GamePage(Screen):
     def on_touch_down(self, touch):
         global CLIENT
         pos = touch.pos
-        if self.moves_left <= 0:
-            print("out of moves")
+
         if CLIENT.this_turn :
             for card in self.hand:
                 self.current_card = card
@@ -315,15 +329,10 @@ class GamePage(Screen):
                     self.hand.append(c)
                     self.SC = self.hand[len(self.hand) - 1]
                     
-                    print('added card')
                     if self.cards_drawn > 0:
                         self.moves_left -= 1
                         CLIENT.magic -= 5
                     self.cards_drawn += 1
-                elif CLIENT.magic >= 5:
-                    print("too many card in your hand")
-                elif len(self.hand) < 5:
-                    print("not enough magic")
 
   
 
@@ -368,12 +377,10 @@ class GamePage(Screen):
                     for c in CLIENT.board:
                         if c.slot == self.hovererd_land_plot - 1:
                             c.health += 4
-                            print("4 health added to entity")
                 if self.SC.type == 18:
                     for c in CLIENT.board:
                         if c.slot == self.hovererd_land_plot - 1:
                             c.attack += 5
-                            print("4 attack added to entity")
                 if self.SC.type == 20:
                     CLIENT.board = []
                     CLIENT.ob = []
